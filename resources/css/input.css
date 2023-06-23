@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, 
+*::before,
+*::after{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  scroll-behavior: smooth;
+  user-select: none;
+}
+
+.loader{
+  @apply fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center invisible opacity-0;
+}
+
+.loader.show{
+  @apply visible opacity-100;
+}
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side,#02aa14 94%,#0000) top/9px 9px no-repeat,
+         conic-gradient(#0000 30%,#02aa14);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);
+  animation: spinner-c7wet2 1s infinite linear;
+}
+
+@keyframes spinner-c7wet2 {
+  100% {
+     transform: rotate(1turn);
+  }
+}
+
+.password-toggler{
+  @apply before:absolute before:w-4 before:h-[14px] before:rounded-full before:bg-dark-gray before:top-1/2 before:left-1 before:-translate-y-1/2;
+}
+
+.password-show{
+  @apply bg-dark-gray before:bg-primary before:left-3;
+}
+
+.active-link{
+  @apply text-dark-gray bg-gray-200;
+}
+
+.nav-items{
+  @apply fixed md:relative bottom-0 inset-x-0 justify-evenly md:justify-center bg-white py-2 md:py-0 border-gray-100 border-2 md:border-0;
+}
+
+.searchbar{
+  @apply invisible opacity-0;
+}
+
+.searchbar.show{
+  @apply visible opacity-100 transition-all; 
+}
+
+.category-slider::-webkit-scrollbar{
+  @apply hidden;
+}
+
+.filter-dropdown,
+.custom-select-dropdown{
+  @apply top-[90%] invisible opacity-0;
+}
+
+.filter-dropdown.show,
+.custom-select-dropdown.show{
+  @apply top-[120%] visible opacity-100 transition-all;
+}
+
+.selected{
+  @apply bg-gray-100;
+}
+
+.tag-option{
+  @apply bg-gray-100 hover:bg-gray-200 w-fit h-12 text-xs text-dark-gray font-semibold leading-[3rem] px-8 rounded-full transition-all cursor-pointer;
+}
+
+.tag-option.selected{
+  @apply bg-gray-300;
+}
+
+.show-details{
+  @apply bg-gray-50;
+}
+
+.modal{
+  @apply grid place-items-center fixed top-full inset-0 bg-black/70 z-20 opacity-0 invisible;
+}
+
+.modal.show{
+  @apply top-0 visible opacity-100;
+}
+
+.dialog{
+  @apply grid place-items-center fixed top-full inset-0 bg-gray-900/70 z-20 opacity-0 invisible;
+}
+
+.dialog.show{
+  @apply top-0 visible opacity-100;
+}
+
+.toast{
+  @apply fixed top-[2.5rem] left-1/2 -translate-x-1/2 w-max z-30 rounded-md overflow-hidden shadow-lg invisible opacity-0 ease-linear duration-200;
+}
+
+.toast.success{
+  @apply bg-emerald-500 shadow-emerald-900/30 top-[5rem] visible opacity-100;
+}
+
+.toast.error{
+  @apply bg-red-500 shadow-red-900/30 top-[5rem] visible opacity-100;
+}
+
+.toast-icon,
+.toast-message{
+  @apply translate-y-[180%] opacity-0 transition-all;
+}
+
+.toast.success .toast-icon,
+.toast.error .toast-icon,
+.toast.success .toast-message,
+.toast.error .toast-message{
+  @apply translate-y-0 opacity-100;
+}
+
+.toast-close{
+  @apply translate-x-full opacity-0 transition-all;
+}
+
+.toast.success .toast-close,
+.toast.error .toast-close{
+  @apply translate-x-0 opacity-100;
+}
+
+.loading {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 4px solid;
+  border-color: rgba(255, 255, 255, 0.5);
+  border-right-color: #ffffff;
+}
+
+.delete-menu{
+  @apply absolute top-2 group-hover/menu:top-5 left-1/2 -translate-x-1/2 bg-red-500 w-8 h-8 grid place-items-center rounded-full z-[2] invisible group-hover/menu:visible opacity-0 group-hover/menu:opacity-100 transition-all;
+}
+
+.order-success{
+  @apply grid place-items-center fixed top-full inset-0 bg-emerald-500 invisible opacity-0 z-20;
+}
+
+.order-success.show{
+  @apply grid top-0 visible opacity-100;
+}
+
+.order-success.show .order-success-animate{
+  @apply translate-y-0 opacity-100;
+}
+
+.history-pending{
+  @apply bg-orange-500;
+}
+
+.history-confirmed{
+  @apply bg-teal-500;
+}
+
+.history-completed{
+  @apply bg-emerald-500;
+}
+
+.history-cancelled{
+  @apply bg-red-500;
+}
