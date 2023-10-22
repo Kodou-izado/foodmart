@@ -4,6 +4,19 @@ window.addEventListener('load', () => {
   hideLoader();
 })
 
+addEvent("body", "click", () => {
+  if(isExist(".notification")) {
+    animated(".notification", {
+      opacity: "0%",
+      visibility: "hidden"
+    }, {
+      duration: 100,
+      easing: "ease-in",
+      fill: "forwards"
+    })
+  }
+})
+
 addEvent('.password-toggler', 'click', (e) => 
   showHidePassword(e, "#password-input")
 )
@@ -206,4 +219,27 @@ addEvent('.edit-btn', 'click', () => {
   disabled.forEach(input => input.removeAttribute('disabled'));
   select.classList.remove('pointer-events-none');
   submitBtn.classList.remove('hidden');
+})
+
+addEvent('.delivery-toggler', 'click', ({ target }) => {
+  target.classList.toggle('active');
+
+  const deliveryInput = document.querySelector('.delivery-status');
+  deliveryInput.value = target.classList.contains('active') ? 1 : 0;
+})
+
+addEvent(".show-notification", "click", (e) => {
+  e.stopPropagation();
+  animated(".notification", {
+    opacity: "100%",
+    visibility: "visible"
+  }, {
+    duration: 100,
+    easing: "ease-in",
+    fill: "forwards"
+  })
+})
+
+addEvent(".notification", "click", (e) => {
+  e.stopPropagation();
 })

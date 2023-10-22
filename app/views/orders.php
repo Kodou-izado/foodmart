@@ -1,17 +1,17 @@
 <?php
   include './config/init.php';
   $title = 'Orders';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
-  include './app/views/partials/_modal.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
+  include 'partials/_modal.php';
 
   use App\Utils\Utilities;
 
   Utilities::redirectUnauthorize();
 ?>
   <div class="min-h-screen bg-white pt-[5rem] md:pt-[6rem] pb-[6rem] md:pb-0">
-    <?php include './app/views/partials/_nav.php' ?>
+    <?php include 'partials/_nav.php' ?>
 
     <div class="search-wrapper flex w-[min(25rem,90%)] h-14 fixed top-20 left-1/2 -translate-x-1/2 bg-white items-center px-8 rounded-full shadow-md searchbar z-[12]">
       <input type="text" placeholder="Search here." id="table-search" autocomplete="off" class="w-full text-xs text-slate-400 placeholder:text-slate-400 outline-none">
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class=" min-h-[65vh] overflow-x-auto lg:overflow-auto">
+      <div class="min-h-[65vh] overflow-x-auto lg:overflow-auto">
         <table class="w-full whitespace-nowrap text-[12px] text-center">
           <thead class="font-medium text-dark-gray">
             <th class="bg-gray-100 py-6 px-3">Order No.</th>
@@ -144,4 +144,4 @@
     </section>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>

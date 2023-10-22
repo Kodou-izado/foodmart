@@ -271,3 +271,8 @@ function search(e, type){
     }
   });
 }
+
+function animated(element, keyframes, options){
+  const el = document.querySelector(element);
+  el.animate(keyframes, options);
+}

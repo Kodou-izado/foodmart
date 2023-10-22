@@ -41,12 +41,12 @@ class OrderController implements AppInterface
 
     if(!empty($_SESSION['order_filter'])){
       $this->helper->query(
-        'SELECT * FROM `orders` o LEFT JOIN `accounts` a ON o.user_id=a.user_id WHERE o.status = ?',
+        'SELECT * FROM `orders` o LEFT JOIN `accounts` a ON o.user_id=a.user_id WHERE o.status = ? ORDER BY o.id DESC',
         [$_SESSION['order_filter']]
       );
     } else {
       $this->helper->query(
-        'SELECT * FROM `orders` o LEFT JOIN `accounts` a ON o.user_id=a.user_id'
+        'SELECT * FROM `orders` o LEFT JOIN `accounts` a ON o.user_id=a.user_id ORDER BY o.id DESC'
       );
     }
 
@@ -60,6 +60,13 @@ class OrderController implements AppInterface
 
   public function insert(): string
   {
+    $this->helper->query("SELECT * FROM `accounts` WHERE `user_id` = ?", [$_SESSION['uid']]);
+    $user_data = $this->helper->fetch();
+
+    if($user_data->account_status != "Verified"){
+      return $this->message->jsonError('Order cannot be processed');
+    }
+ 
     if(empty($this->order_type) AND empty($this->payment_method)){
       return $this->message->jsonError('Set your payment details');
     }
@@ -130,8 +137,14 @@ class OrderController implements AppInterface
       return $this->message->jsonError('Cannot process your order');
     }
 
-    $this->helper->commit();
+    $this->helper->query("INSERT INTO `notifications` (`user_id`, `date_created`) VALUES (?, current_timestamp())", [$_SESSION['uid']]);
 
+    if($this->helper->rowCount() == 0){
+      $this->helper->rollback();
+      return $this->message->jsonError('Cannot process your order');
+    }
+
+    $this->helper->commit();
     return $this->message->jsonSuccess('Your order was placed');
   }
 

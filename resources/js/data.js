@@ -328,6 +328,23 @@ addEvent('#security-form', 'submit', (e) => {
   })
 })
 
+addEvent('#setting-form', 'submit', (e) => {
+  e.preventDefault();
+  disabled('.save-setting', 'Saving...', 'disabled');
+  
+  const formData = new FormData(e.target);
+  
+  request(
+    SYSTEM_URL + '/app/handler/process_setting_save.php', 
+    formData
+    )
+    .then(data => {
+      disabled('.save-setting', 'Save', 'enabled');
+
+      toast(data.message, data.type);
+  })
+})
+
 addEvent('.order-row', 'click', (e) => {
   request(
     SYSTEM_URL + '/app/handler/process_getting_order_items.php', 
@@ -411,4 +428,11 @@ addEvent('.order-filter', 'click', (e) => {
       }, 3000);
     }
   })
+})
+
+addEvent('.show-notification', 'click', () => {
+  const notifCount = document.querySelector('.notif-count');
+  notifCount.style.display = 'none';
+
+  fetch(SYSTEM_URL + '/app/handler/process_notification_read.php');
 })

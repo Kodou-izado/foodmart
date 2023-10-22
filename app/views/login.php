@@ -1,9 +1,9 @@
 <?php
   include './config/init.php';
   $title = 'Login';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
 
   use App\Utils\Utilities;
 
@@ -67,4 +67,4 @@
     </div>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>

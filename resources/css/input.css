@@ -42,11 +42,25 @@ body{
   }
 }
 
-.password-toggler{
+.custom-scroll::-webkit-scrollbar{
+  @apply w-[5px];
+}
+
+.custom-scroll::-webkit-scrollbar-thumb{
+  @apply w-[5px] rounded-lg bg-transparent;
+}
+
+.custom-scroll:hover::-webkit-scrollbar-thumb{
+  @apply bg-gray-100;
+}
+
+.password-toggler,
+.delivery-toggler{
   @apply before:absolute before:w-4 before:h-[14px] before:rounded-full before:bg-dark-gray before:top-1/2 before:left-1 before:-translate-y-1/2;
 }
 
-.password-show{
+.password-show,
+.delivery-toggler.active{
   @apply bg-dark-gray before:bg-primary before:left-3;
 }
 
@@ -184,4 +198,12 @@ body{
 
 .history-cancelled{
   @apply bg-red-500;
+}
+
+.notif{
+  @apply flex items-center gap-2 py-3 px-6 hover:bg-gray-50 transition-all;
+}
+
+.notif.unread{
+  @apply bg-gray-100;
 }

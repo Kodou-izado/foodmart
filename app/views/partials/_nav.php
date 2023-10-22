@@ -112,7 +112,7 @@
       <?php } ?>
     </ul>
 
-    <ul class="flex items-center gap-1 md:gap-4">
+    <ul class="flex items-center gap-2">
       <div class="flex items-center gap-1 md:gap-2">
       <?php 
         $exception = ["About Us", "Shopping Cart"];
@@ -153,6 +153,48 @@
         </a>
       <?php } ?>
       </div>
+
+      <?php if(Utilities::isAdmin()){ ?>
+        <div class="relative w-9 h-9 grid place-items-center bg-grey text-sm font-medium rounded-full" title="Notifications">
+          <img src="<?php echo SYSTEM_URL ?>/public/icons/notification-bing-linear.svg" alt="notification" role="button" class="show-notification w-4 h-4">
+  
+          <?php  
+            $helper->query("SELECT * FROM `notifications` WHERE `notif_status` = ?", ["Unread"]);
+            $notif_count = $helper->rowCount();
+  
+            $helper->query("SELECT * FROM `notifications` n LEFT JOIN `accounts` a ON n.user_id=a.user_id ORDER BY n.id DESC");
+            $notifications = $helper->fetchAll();
+          ?>
+  
+          <?php if($notif_count > 0){ ?>
+  
+            <span class="notif-count absolute top-1 right-0 w-4 h-4 flex items-center justify-center text-[8px] font-medium text-white bg-primary rounded-full pointer-events-none"><?php echo $notif_count ?></span>
+  
+          <?php } ?>
+  
+          <div class="notification absolute top-full right-0 w-[14rem] bg-white rounded-xl py-4 opacity-0 invisible shadow-md z-[2]">
+            <div class="px-6 pb-2 border-b border-b-gray-300/40">
+              <p class="text-[11px] font-semibold text-black leading-none">Notifications</p>
+              <p class="text-[9px] font-semibold text-black/60">Be notified of the new orders</p>
+            </div>
+            <div class="custom-scroll max-h-[210px] overflow-y-auto">
+              <?php 
+                if(count($notifications) > 0){ 
+                  foreach($notifications as $notification):
+              ?>
+  
+                <a href="<?php echo SYSTEM_URL ?>/orders" class="notif <?= strtolower($notification->notif_status) ?>">
+                  <p class="text-[9.5px] font-semibold text-black/60 leading-tight">A new order from <span class="text-primary"><?= $notification->fullname ?></span> has been placed. Confirm it now</p>
+                </a>
+  
+              <?php
+                  endforeach;
+                 }    
+              ?>
+            </div>
+          </div>
+        </div>
+      <?php } ?>
       <div class="relative flex items-center cursor-pointer group/profile">
         <img src="<?php echo SYSTEM_URL ?>/uploads/user/male.svg" alt="profile" class="w-8">
 

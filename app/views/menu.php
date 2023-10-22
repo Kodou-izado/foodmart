@@ -1,10 +1,10 @@
 <?php
   include './config/init.php';
   $title = 'Menu';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
-  include './app/views/partials/_modal.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
+  include 'partials/_modal.php';
 
   use App\Utils\Utilities;
 
@@ -12,8 +12,8 @@
 ?>
   <div class="min-h-screen bg-white pt-[5rem] md:pt-[6rem] pb-[6rem] md:pb-[2rem]">
     <?php 
-      include './app/views/partials/_nav.php';
-      include './app/views/partials/_search.php';
+      include 'partials/_nav.php';
+      include 'partials/_search.php';
     ?>
 
     <section class="w-[min(60rem,90%)] mx-auto">
@@ -136,4 +136,4 @@
     </section>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>

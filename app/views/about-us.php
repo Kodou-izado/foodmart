@@ -1,16 +1,16 @@
 <?php
   include './config/init.php';
   $title = 'About Us';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
 
   use App\Utils\Utilities;
 
   Utilities::redirectUnauthorize();
 ?>
   <div class="min-h-screen bg-white py-[5rem]">
-    <?php include './app/views/partials/_nav.php' ?>
+    <?php include 'partials/_nav.php' ?>
 
     <section class="w-[min(60rem,90%)] mx-auto">
       <div class="min-h-[75vh] flex items-center">
@@ -41,4 +41,4 @@
     </section>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>

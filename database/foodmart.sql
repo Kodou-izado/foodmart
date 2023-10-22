@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2023 at 06:37 AM
+-- Generation Time: Oct 23, 2023 at 01:52 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -47,9 +47,11 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `user_id`, `fullname`, `gender`, `username`, `email`, `year_section`, `password`, `role_id`, `account_status`, `date_created`, `date_updated`) VALUES
-(1, '96abef16-0cd4-11ee-aca4-088fc30176f9', 'FoodMart', 'Male', 'foodmartadmin', 'foodmart@gmail.com', '', '$2y$10$BtQfQZdG3h3ob8lHICeJLeQvhhMcFpFUKsvS/IXdxXLocIbT7gNOe', '699dd7be-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-17 14:02:49', '2023-06-17 14:02:49'),
-(13, '42132d44-0e46-11ee-8923-088fc30176f9', 'Arthur Nery', 'Male', 'arthurnery', 'arthurnery@gmail.com', 'Grade 8 - Mapagmahal', '$2y$10$JWTvXaIXyQICSPcPGkZHwu4wCGhzppA5ZMcdErQgR/XnLO090iJ76', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-19 10:09:01', '2023-06-20 13:54:56'),
-(14, '89dce3fe-0e46-11ee-8923-088fc30176f9', 'Zach Tabuldo', 'Male', 'zachtabuldo', 'zachtabuldo@gmail.com', 'Grade 7 - Masipag', '$2y$10$UWbGBjVMIxJ/NjPQH1a7BOYh4ssFRhVw2X1bznxUYa1aJtSq.1Y1y', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-19 10:11:01', '2023-06-19 10:11:01');
+(1, '96abef16-0cd4-11ee-aca4-088fc30176f9', 'FoodMart', 'Male', 'foodmartadmin', 'foodmart@gmail.com', '', '$2y$10$BtQfQZdG3h3ob8lHICeJLeQvhhMcFpFUKsvS/IXdxXLocIbT7gNOe', '699dd7be-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-17 14:02:49', '2023-06-21 18:44:19'),
+(13, '42132d44-0e46-11ee-8923-088fc30176f9', 'Arthur Nery', 'Male', 'arthurnery', 'arthurnery@gmail.com', 'Grade 8 - Mapagmahal', '$2y$10$JWTvXaIXyQICSPcPGkZHwu4wCGhzppA5ZMcdErQgR/XnLO090iJ76', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-19 10:09:01', '2023-06-21 18:44:53'),
+(14, '89dce3fe-0e46-11ee-8923-088fc30176f9', 'Zach Tabuldo', 'Male', 'zachtabuldo', 'zachtabuldo@gmail.com', 'Grade 7 - Masipag', '$2y$10$UWbGBjVMIxJ/NjPQH1a7BOYh4ssFRhVw2X1bznxUYa1aJtSq.1Y1y', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-19 10:11:01', '2023-06-19 10:11:01'),
+(17, 'd02210b8-101c-11ee-a28c-088fc30176f9', 'Raymond Reblando', 'Male', 'sensei', 'raymondreblando@gmail.com', 'Grade 7 - Masunurin', '$2y$10$on.4wlJ6OuoWmX1lVjkqc.BO1R9L02RCtkbwyhCUweDB3vh9Gvx8u', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-06-21 18:17:16', '2023-06-21 18:17:16'),
+(18, '6875ecd4-3d96-11ee-9e6a-088fc30176f9', 'Goergie Mansanido', 'Female', 'Georgie', 'georgie@gmail.com', 'Grade 8 - Mapagmahal', '$2y$10$a1WbQMb1K4i1.3woJGZXju/6/YNbmoCrOOKen8JFogCdfExGVpenC', '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Verified', '2023-08-18 15:11:10', '2023-08-18 15:11:10');
 
 -- --------------------------------------------------------
 
@@ -127,6 +129,19 @@ INSERT INTO `menus` (`id`, `menu_id`, `menu_name`, `menu_price`, `category_id`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(200) NOT NULL,
+  `notif_status` varchar(30) NOT NULL DEFAULT 'Unread',
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -142,13 +157,6 @@ CREATE TABLE `orders` (
   `date_added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `order_id`, `order_no`, `user_id`, `order_type`, `payment_method`, `delivery_address`, `status`, `date_added`) VALUES
-(1, '16cbc6cc-0fea-11ee-a28c-088fc30176f9', 'tz51xbZT6YA', '42132d44-0e46-11ee-8923-088fc30176f9', 'Pick Up', 'GCash', '', 'Pending', '2023-06-21 12:14:14');
-
 -- --------------------------------------------------------
 
 --
@@ -163,14 +171,6 @@ CREATE TABLE `order_items` (
   `quantity` int(11) NOT NULL,
   `date_added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `order_item_id`, `order_id`, `menu_id`, `quantity`, `date_added`) VALUES
-(1, '16cc6454-0fea-11ee-a28c-088fc30176f9', '16cbc6cc-0fea-11ee-a28c-088fc30176f9', '6e326382-0d6a-11ee-9327-088fc30176f9', 2, '2023-06-21 12:14:14'),
-(2, '16cc71f2-0fea-11ee-a28c-088fc30176f9', '16cbc6cc-0fea-11ee-a28c-088fc30176f9', 'd93b63b1-0e44-11ee-8923-088fc30176f9', 2, '2023-06-21 12:14:14');
 
 -- --------------------------------------------------------
 
@@ -192,6 +192,26 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `role_id`, `role_name`, `date_created`) VALUES
 (1, '699dd7be-0c4b-11ee-a71c-088fc30176f9', 'Admin', '2023-06-16 15:40:37'),
 (2, '73ca4984-0c4b-11ee-a71c-088fc30176f9', 'Customer', '2023-06-16 15:40:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL,
+  `gcash_acc_name` varchar(100) NOT NULL,
+  `gcash_acc_no` varchar(11) NOT NULL,
+  `is_delivery_available` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `gcash_acc_name`, `gcash_acc_no`, `is_delivery_available`) VALUES
+(1, 'Foodmart', '09322550101', 1);
 
 --
 -- Indexes for dumped tables
@@ -222,6 +242,12 @@ ALTER TABLE `menus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
@@ -240,6 +266,12 @@ ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -247,13 +279,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -265,25 +297,37 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

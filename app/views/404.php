@@ -1,7 +1,7 @@
 <?php
   include './config/init.php';
   $title = '404 Not Found';
-  include './app/views/partials/_header.php';
+  include 'partials/_header.php';
 ?>
   <div class="min-h-screen grid place-items-center">
     <div>

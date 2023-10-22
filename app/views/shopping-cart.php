@@ -1,13 +1,16 @@
 <?php
   include './config/init.php';
   $title = 'Shopping Cart';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
 
   use App\Utils\Utilities;
 
   Utilities::redirectUnauthorize();
+
+  $helper->query("SELECT * FROM `settings` LIMIT 1");
+  $setting_data = $helper->fetch();
 ?>
   <div class="order-success">
     <div>
@@ -21,7 +24,7 @@
     </div>
   </div>
   <div class="min-h-screen bg-white pt-[5rem] md:pt-[6rem] pb-[6rem] md:pb-[3rem]">
-    <?php include './app/views/partials/_nav.php' ?>
+    <?php include 'partials/_nav.php' ?>
 
     <div class="flex w-[min(25rem,90%)] h-14 fixed top-20 left-1/2 -translate-x-1/2 bg-white items-center px-8 rounded-full shadow-lg searchbar">
       <input 
@@ -120,9 +123,11 @@
                 <li class="order-type list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
                   Pick Up
                 </li>
-                <li class="order-type list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
-                  Delivery
-                </li>
+                <?php if($setting_data->is_delivery_available == 1){ ?>
+                  <li class="order-type list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
+                    Delivery
+                  </li>
+                <?php } ?>
               </div>
             </div>
             <div class="hidden delivery">
@@ -157,9 +162,9 @@
                   <img src="<?php echo SYSTEM_URL ?>/public/image/gcash.png" alt="gcash" class="w-8">
                   <div>
                     <p class="text-sm text-dark-gray font-semibold">
-                      Raymond R.
+                      <?php echo $setting_data->gcash_acc_name ?>
                     </p>
-                    <input type="text" class="block account-num text-[10px] text-slate-500 outline-none" value="09322550100" disabled>
+                    <input type="text" class="block account-num text-[10px] text-slate-500 outline-none" value="<?php echo $setting_data->gcash_acc_no ?>" disabled>
                   </div>
                   <button type="button" class="copy-btn bg-gray-100 p-2 ml-4 rounded-full text-[10px] text-dark-gray font-medium" title="copy">
                     <img src="<?php echo SYSTEM_URL ?>/public/icons/copy-linear.svg" alt="copy" class="w-4 pointer-events-none">
@@ -202,4 +207,4 @@
     </section>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>

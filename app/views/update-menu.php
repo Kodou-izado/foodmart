@@ -1,9 +1,9 @@
 <?php
   include './config/init.php';
   $title = 'Update Menu';
-  include './app/views/partials/_header.php';
-  include './app/views/partials/_loader.php';
-  include './app/views/partials/_toast.php';
+  include 'partials/_header.php';
+  include 'partials/_loader.php';
+  include 'partials/_toast.php';
 
   use App\Utils\Utilities;
 
@@ -12,7 +12,7 @@
   $menu_data = $menu->getOne($id);
 ?>
   <div class="min-h-screen bg-white pt-[5rem] md:pt-[6rem] pb-[6rem] md:pb-0">
-    <?php include './app/views/partials/_nav.php' ?>
+    <?php include 'partials/_nav.php' ?>
 
     <section class="w-[min(60rem,90%)] mx-auto">
       <div class="min-h-[75vh] flex items-center">
@@ -110,4 +110,4 @@
     </section>
   </div>
 
-<?php include './app/views/partials/_footer.php' ?>
+<?php include 'partials/_footer.php' ?>
