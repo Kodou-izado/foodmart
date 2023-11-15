@@ -172,8 +172,10 @@ class OrderController implements AppInterface
       return $this->message->jsonError('Status failed to update');
     }
 
-    return $this->message->jsonSuccess('Status was updated');
+    $message = Utilities::isCustomer() ? 'Order was cancelled' : 'Status was updated';
+    return $this->message->jsonSuccess($message);
   }
+  
   public function delete(string $id): string
   {
 

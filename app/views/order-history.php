@@ -4,6 +4,7 @@
   include 'partials/_header.php';
   include 'partials/_loader.php';
   include 'partials/_toast.php';
+  include 'partials/_modal.php';
 
   use App\Utils\Utilities;
 
@@ -33,7 +34,7 @@
               }
           ?>
             <div class="search-area order-history p-6 rounded-2xl cursor-pointer group/order hover:bg-gray-50 transition-all mb-2 <?= $index == 0 ? 'show-details' : '' ?>">
-              <div class="flex items-center justify-between group-[.show-details]/order:mb-6 pointer-events-none">
+              <div class="flex flex-wrap items-center justify-between gap-4 group-[.show-details]/order:mb-6 pointer-events-none">
                 <div class="flex items-center gap-4">
                   <div class="<?= Utilities::getStatusColor($order->status) ?> h-fit p-4 rounded-2xl">
                     <img src="<?php echo SYSTEM_URL ?>/public/icons/receipt-bold.svg" alt="icon" class="w-4 sm:w-auto">
@@ -47,9 +48,15 @@
                     </p>
                   </div>
                 </div>
-                <span class="finder3 text-[8px] md:text-[10px] text-white font-semibold h-fit py-2 px-4 <?= Utilities::getStatusColor($order->status) ?> rounded-full">
-                  <?= $order->status ?>
-                </span>
+                <div class="flex items-center gap-2">
+                  <span class="finder3 text-[8px] md:text-[10px] text-white font-semibold h-fit py-2 px-4 <?= Utilities::getStatusColor($order->status) ?> rounded-full">
+                    <?= $order->status ?>
+                  </span>
+
+                  <?php if ($order->status == 'Pending') : ?>
+                    <button type="button" class="cancel-order-btn text-[8px] md:text-[10px] text-red-500 font-semibold border border-red-500 py-[7px] px-4 rounded-full pointer-events-auto" data-value="<?= $order->order_id ?>">Cancel Order</button>
+                  <?php endif ?>
+                </div>
               </div>
               <div class="hidden group-[.show-details]/order:block">
                 <div class="flex flex-wrap gap-6 md:gap-8 mb-6">

@@ -5,7 +5,8 @@ window.addEventListener('load', () => {
 })
 
 addEvent("body", "click", () => {
-  if(isExist(".notification")) {
+  const notification = document.querySelector(".notification");
+  if(notification !== null) {
     animated(".notification", {
       opacity: "0%",
       visibility: "hidden"
@@ -60,6 +61,11 @@ addEvent('.order-history', 'click', (e) => {
   removeDynamicStyle('.order-history', 'show-details', 'multiple');
   e.target.classList.add('show-details');
 })
+
+addEvent('.cancel-order-btn', 'click', (e) => { 
+  e.stopPropagation(); 
+  showHideDialog('#cancel-order-dialog', 'show', e.target.dataset.value);
+});
 
 addEvent('.file-upload', 'click', () => {
   showFileDialog('.upload-input');

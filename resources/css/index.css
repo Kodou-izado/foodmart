@@ -528,6 +528,10 @@ video {
   pointer-events: none;
 }
 
+.pointer-events-auto{
+  pointer-events: auto;
+}
+
 .invisible{
   visibility: hidden;
 }
@@ -927,6 +931,10 @@ video {
   width: max-content;
 }
 
+.w-14{
+  width: 3.5rem;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
@@ -1062,6 +1070,10 @@ video {
   border-radius: 0.75rem;
 }
 
+.rounded-sm{
+  border-radius: 0.125rem;
+}
+
 .rounded-t-3xl{
   border-top-left-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
@@ -1088,8 +1100,18 @@ video {
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
 }
 
+.border-red-500{
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity));
+}
+
 .border-slate-400\/60{
   border-color: rgb(148 163 184 / 0.6);
+}
+
+.border-primary{
+  --tw-border-opacity: 1;
+  border-color: rgb(2 170 20 / var(--tw-border-opacity));
 }
 
 .border-b-gray-100{
@@ -1288,6 +1310,16 @@ video {
 .py-\[5rem\]{
   padding-top: 5rem;
   padding-bottom: 5rem;
+}
+
+.py-\[7px\]{
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.py-1{
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .pb-2{
@@ -2326,10 +2358,6 @@ body{
 
   .md\:gap-2{
     gap: 0.5rem;
-  }
-
-  .md\:gap-4{
-    gap: 1rem;
   }
 
   .md\:gap-8{

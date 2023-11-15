@@ -148,3 +148,27 @@
     </div>
   </div>
 </div>
+
+<div class="dialog" id="cancel-order-dialog">
+  <div class="w-[min(25rem,90%)] bg-white rounded-md">
+    <div class="flex items-center justify-between border-gray-100 border-b-2 py-4 px-6">
+      <p class="text-sm text-dark-gray font-medium">
+        Confirm
+      </p>
+      <button class="close-dialog" data-target="#cancel-order-dialog">
+        <img src="<?php echo SYSTEM_URL ?>/public/icons/close-circle-linear.svg" alt="close" class="pointer-events-none">
+      </button>
+    </div>
+    <div class="py-4 px-6">
+      <p class="text-xs text-gray-500 mb-4">
+        Please confirm if do you want to cancel this order. Take note that this action cannot be undone.
+      </p>
+      <button class="confirm confirm-cancellation bg-emerald-500 text-xs text-white font-medium py-2 px-5 rounded-full">
+        Confirm
+      </button>
+      <button class="close-dialog bg-gray-200 text-xs text-dark-gray font-medium py-2 px-5 rounded-full" data-target="#cancel-order-dialog">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

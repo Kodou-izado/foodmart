@@ -32,14 +32,11 @@ class CartController implements AppInterface
 
   }
 
-  public function getOne(string $id): stdClass 
-  {
-
-  }
+  public function getOne(string $id): stdClass {}
 
   public function insert(): string
   {
-    if(empty($this->menu_id)){
+    if (empty($this->menu_id)) {
       return $this->message->jsonError('An error occurred');
     }
 
@@ -48,8 +45,14 @@ class CartController implements AppInterface
       [$this->menu_id]
     );
 
-    if($this->helper->rowCount() == 0){
+    if ($this->helper->rowCount() == 0) {
       return $this->message->jsonError('An error occurred');
+    }
+
+    $this->helper->query('SELECT * FROM cart WHERE `menu_id` = ? AND `user_id` = ?', [$this->menu_id, $_SESSION['uid']]);
+
+    if ($this->helper->rowCount() > 0) {
+      return $this->message->jsonError('Item already added');
     }
 
     $this->helper->query(
@@ -66,7 +69,7 @@ class CartController implements AppInterface
 
   public function update(string $id): string
   {
-    if(empty($id) AND empty($this->quantity)){
+    if (empty($id) AND empty($this->quantity)) {
       return $this->message->jsonError('An error occurred');
     }
 
@@ -79,21 +82,36 @@ class CartController implements AppInterface
       return $this->message->jsonError('An error occurred');
     }
 
+    $cart_data = $this->helper->fetch();
+
     if($this->quantity == 0){
       $this->helper->query(
         'DELETE FROM `cart` WHERE `cart_id` = ?',
         [$id]
       );
-    } else {
-      $this->helper->query(
-        'UPDATE `cart` SET `quantity` = ? WHERE `cart_id` = ?',
-        [$this->quantity, $id]
-      );
+
+      if($this->helper->rowCount() == 0){
+        return $this->message->jsonError('An error occurred');
+      }
+
+      return $this->message->jsonSuccess('Updated');
+    } 
+
+    $this->helper->query(
+      'SELECT * FROM `menus` WHERE `menu_id` = ?',
+      [$cart_data->menu_id]
+    );
+
+    $menu_data = $this->helper->fetch();
+
+    if ($this->quantity > $menu_data->menu_stock) {
+      return $this->message->jsonError($menu_data->menu_name. ' stock left is ' . $menu_data->menu_stock);
     }
-    
-    if($this->helper->rowCount() == 0){
-      return $this->message->jsonError('An error occurred');
-    }
+
+    $this->helper->query(
+      'UPDATE `cart` SET `quantity` = ? WHERE `cart_id` = ?',
+      [$this->quantity, $id]
+    );
 
     return $this->message->jsonSuccess('Updated');
   }

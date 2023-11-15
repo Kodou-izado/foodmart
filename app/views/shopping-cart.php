@@ -71,17 +71,7 @@
                 ₱ <?= $cart_item->menu_price ?> only
               </p>
             </div>
-            <div class="flex items-center gap-4 ml-auto">
-              <button class="subtract w-8 h-8 text-dark-gray font-bold bg-secondary rounded-full" data-value="<?= $cart_item->cart_id ?>">
-                -
-              </button>
-              <p class="item-quantity text-sm text-dark-gray font-semibold">
-                <?= $cart_item->quantity ?>
-              </p>
-              <button class="add w-8 h-8 text-dark-gray font-bold bg-secondary rounded-full" data-value="<?= $cart_item->cart_id ?>">
-                +
-              </button>
-            </div>
+            <input type="number" class="quantity-input w-12 text-sm text-dark-gray font-medium text-center border border-primary ml-auto py-1 rounded-sm outline-none" value="<?= $cart_item->quantity ?>" data-value="<?= $cart_item->cart_id ?>">
           </div>
         <?php endforeach ?>
           <a href="<?php echo SYSTEM_URL ?>/menu" class="inline-block bg-gray-100 py-3 px-6 text-xs text-dark-gray font-semibold mt-6 rounded-full">
@@ -145,9 +135,13 @@
                 <li class="payment-method list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
                   Over the Counter
                 </li>
-                <li class="payment-method list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
-                  Cash on Delivery
-                </li>
+
+                <?php if($setting_data->is_delivery_available == 1){ ?>
+                  <li class="payment-method list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
+                    Cash on Delivery
+                  </li>
+                <?php } ?>
+                
                 <li class="payment-method list-none bg-gray-100 text-[10px] font-medium py-3 px-5 rounded-full cursor-pointer transition-all">
                   GCash
                 </li>

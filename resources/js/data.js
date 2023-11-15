@@ -224,29 +224,48 @@ addEvent('.buy-btn', 'click', (e) => {
   })
 })
 
-addEvent('.add', 'click', (e) => {
-  const quantity = setQuantity(e.target, 'add');
+// addEvent('.add', 'click', (e) => {
+//   const quantity = setQuantity(e.target, 'add');
 
-  request(
-    SYSTEM_URL + '/app/handler/process_cart_item_quantity.php', 
-    'id=' + e.target.dataset.value + '&quantity=' + quantity,
-    {
-      'Content-type': 'application/x-www-form-urlencoded'
-    }
-  )
-  .then(data => {
-    if(data.type === 'success'){
-      location.reload();
-      return
-    }
+//   request(
+//     SYSTEM_URL + '/app/handler/process_cart_item_quantity.php', 
+//     'id=' + e.target.dataset.value + '&quantity=' + quantity,
+//     {
+//       'Content-type': 'application/x-www-form-urlencoded'
+//     }
+//   )
+//   .then(data => {
+//     if(data.type === 'success'){
+//       location.reload();
+//       return
+//     }
 
-    toast(data.message, data.type);
-  })
-})
+//     toast(data.message, data.type);
+//   })
+// })
 
-addEvent('.subtract', 'click', (e) => {
-  const quantity = setQuantity(e.target, 'subtract');
+// addEvent('.subtract', 'click', (e) => {
+//   const quantity = setQuantity(e.target, 'subtract');
   
+//   request(
+//     SYSTEM_URL + '/app/handler/process_cart_item_quantity.php', 
+//     'id=' + e.target.dataset.value + '&quantity=' + quantity,
+//     {
+//       'Content-type': 'application/x-www-form-urlencoded'
+//     }
+//   )
+//   .then(data => {
+//     if(data.type === 'success'){
+//       location.reload();
+//       return
+//     }
+
+//     toast(data.message, data.type);
+//   })
+// })
+
+addEvent('.quantity-input', 'change', (e) => {
+  const quantity = e.target.value === "" ? 0 : e.target.value;
   request(
     SYSTEM_URL + '/app/handler/process_cart_item_quantity.php', 
     'id=' + e.target.dataset.value + '&quantity=' + quantity,
@@ -283,6 +302,25 @@ addEvent('#cart-form', 'submit', (e) => {
     }
     
     toast(data.message, data.type);
+  })
+})
+
+addEvent('.confirm-cancellation', 'click', (e) => {
+  request(
+    SYSTEM_URL + '/app/handler/process_changing_order_status.php', 
+    'id=' + e.target.dataset.value + '&status=Cancelled',
+    {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+  )
+  .then(data => {
+    toast(data.message, data.type);
+
+    if(data.type === 'success'){
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
+    }
   })
 })
 
