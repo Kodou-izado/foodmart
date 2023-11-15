@@ -71,8 +71,23 @@ class OrderController implements AppInterface
       return $this->message->jsonError('Set your payment details');
     }
 
+    $this->helper->query('SELECT * FROM `settings`');
+    $settings = $this->helper->fetch();
+
+    if($this->order_type == "Delivery" AND $settings->is_delivery_available == 0){
+      return $this->message->jsonError('Delivery is not available');
+    }
+
     if($this->order_type == "Delivery" AND empty($this->delivery_address)){
       return $this->message->jsonError('Delivery address is required');
+    }
+
+    if($this->order_type == "Delivery" AND $this->payment_method == "Cash on Delivery" && $settings->is_delivery_available == 0){
+      return $this->message->jsonError('Delivery is not available');
+    }
+
+    if($this->order_type == "Pick Up" AND $this->payment_method == "Cash on Delivery"){
+      return $this->message->jsonError('Payment method is not available');
     }
 
     $this->upload->setFile($_FILES['gcash_receipt']);
@@ -112,6 +127,18 @@ class OrderController implements AppInterface
 
     foreach($cart_items as $item){
       $this->helper->query(
+        'SELECT * FROM `menus` WHERE `menu_id` = ?',
+        [$item->menu_id]
+      );
+
+      $menu_data = $this->helper->fetch();
+
+      if ($item->quantity > $menu_data->menu_stock) {
+        $this->helper->rollback();
+        return $this->message->jsonError($menu_data->menu_name. ' stock left is ' . $menu_data->menu_stock);
+      }
+
+      $this->helper->query(
         'INSERT INTO `order_items` (`order_item_id`, `order_id`, `menu_id`, `quantity`, `date_added`) VALUES (UUID(), ?, ?, ?, current_timestamp())',
         [$order_details->order_id, $item->menu_id, $item->quantity]
       );
@@ -119,6 +146,37 @@ class OrderController implements AppInterface
       if($this->helper->rowCount() == 0){
         $this->helper->rollback();
         return $this->message->jsonError('Cannot process your order');
+      }
+
+      $new_stock = $menu_data->menu_stock - $item->quantity;
+
+      $this->helper->query(
+        'UPDATE `menus` SET `menu_stock` = ? WHERE `menu_id` = ?',
+        [$new_stock, $item->menu_id]
+      );
+
+      if($this->helper->rowCount() == 0){
+        $this->helper->rollback();
+        return $this->message->jsonError('Cannot process your order');
+      }
+
+      $this->helper->query(
+        'SELECT * FROM `menus` WHERE `menu_id` = ?',
+        [$item->menu_id]
+      );
+
+      $new_menu_data = $this->helper->fetch();
+
+      if ($new_menu_data->menu_stock < 10) {
+        $this->helper->query(
+          "INSERT INTO `notifications` (`origin_id`, `origin_type`, `date_created`) VALUES (?, ?, current_timestamp())", 
+          [$item->menu_id, 'Stock']
+        );
+
+        if($this->helper->rowCount() == 0){
+          $this->helper->rollback();
+          return $this->message->jsonError('Cannot process your order');
+        }
       }
     }
 
@@ -137,7 +195,10 @@ class OrderController implements AppInterface
       return $this->message->jsonError('Cannot process your order');
     }
 
-    $this->helper->query("INSERT INTO `notifications` (`user_id`, `date_created`) VALUES (?, current_timestamp())", [$_SESSION['uid']]);
+    $this->helper->query(
+      "INSERT INTO `notifications` (`origin_id`, `origin_type`, `user_id`, `date_created`) VALUES (?, ?, ?, current_timestamp())",
+      [$_SESSION['uid'], 'New Order', $_SESSION['uid']]
+    );
 
     if($this->helper->rowCount() == 0){
       $this->helper->rollback();
