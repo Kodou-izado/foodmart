@@ -76,16 +76,6 @@
         <?php 
           $date = date('Y-m-d', strtotime("now"));
           foreach($menu->get() as $menu): 
-            $helper->query(
-              'SELECT * FROM `order_items` WHERE `menu_id` = ? AND `date_added` LIKE ?',
-              [$menu->menu_id, '%'.$date.'%']
-            );
-
-            $stock = $menu->menu_stock;
-
-            foreach($helper->fetchAll() as $item){
-              $stock = $stock - $item->quantity;
-            }
         ?>
           <div class="search-area">
             <div class="group/menu relative bg-white rounded-2xl py-7 px-4 shadow-sm hover:shadow-lg transition-all border-gray-100 border-2">
@@ -97,7 +87,7 @@
               <div class="relative">
                 <img src="<?php echo SYSTEM_URL ?>/uploads/menu/<?= $menu->menu_id ?>.png" alt="<?= $menu->menu_name ?>" class="h-[140px] mx-auto">
                 <span class="finder1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-semibold bg-gray-50/70 py-2 px-4 rounded-full">
-                  <?= $stock > 1 ? $menu->menu_tag : 'Sold Out' ?>
+                  <?= $menu->menu_stock > 1 ? $menu->menu_tag : 'Sold Out' ?>
                 </span>
               </div>
               <p class="finder2 text-sm text-dark-gray font-semibold text-center leading-8">
@@ -109,11 +99,11 @@
                 </p>
                 <span class="text-slate-200">|</span>
                 <p>
-                  <?= $stock ?> left
+                  <?= $menu->menu_stock ?> left
                 </p>
               </div>
             <?php if(Utilities::isCustomer()){ ?>
-              <button class="buy-btn block <?= $stock > 1 ? 'bg-primary text-white' : 'bg-gray-100 text-slate-500 pointer-events-none' ?> text-xs font-semibold py-3 px-10 rounded-full mx-auto" data-value="<?= $menu->menu_id ?>">
+              <button class="buy-btn block <?= $menu->menu_stock > 1 ? 'bg-primary text-white' : 'bg-gray-100 text-slate-500 pointer-events-none' ?> text-xs font-semibold py-3 px-10 rounded-full mx-auto" data-value="<?= $menu->menu_id ?>">
                 Buy
               </button>
             <?php } else { ?>
