@@ -114,8 +114,17 @@ class AccountController
       return $this->message->jsonError('Account creation failed');
     }
 
-    $this->helper->commit();
+    $this->helper->query(
+      'INSERT INTO `notifications` (`origin_id`, `origin_type`, `date_created`) VALUES (?, ?, ?)',
+      [$user->user_id, 'New User', Utilities::getCurrentDate()]
+    );
 
+    if ($this->helper->rowCount() == 0) {
+      $this->helper->rollback();
+      return $this->message->jsonError('An error occurred');
+    }
+
+    $this->helper->commit();
     return $this->message->jsonSuccess('Account created');
   }
 
