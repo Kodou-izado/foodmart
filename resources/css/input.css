@@ -188,11 +188,14 @@ body{
   @apply bg-orange-500;
 }
 
-.history-confirmed{
+.history-confirmed,
+.history-on-process{
   @apply bg-teal-500;
 }
 
-.history-completed{
+.history-completed,
+.history-ready-to-pickup,
+.history-ready-to-deliver{
   @apply bg-emerald-500;
 }
 

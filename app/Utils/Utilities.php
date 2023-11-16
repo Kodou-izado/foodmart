@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Utils;
+use DateTime;
 
 class Utilities
 {
@@ -16,9 +17,9 @@ class Utilities
     return password_hash($password, PASSWORD_BCRYPT, [10]);
   }
 
-  public static function generateOrderNo(): string
+  public static function generateOrderNo(int $orderNo = null): int
   {
-    return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 11);
+    return !empty($orderNo) ? $orderNo += 1 : 11001;
   }
 
   public static function getStatusColor(string $status): string
@@ -27,6 +28,12 @@ class Utilities
       return 'history-pending';
     elseif($status == "Confirmed")
       return 'history-confirmed';
+    elseif($status == "On Process")
+      return 'history-on-process';
+    elseif($status == "Ready to Pickup")
+      return 'history-ready-to-pickup';
+    elseif($status == "Ready to Deliver")
+      return 'history-ready-to-deliver';
     elseif($status == "Completed")
       return 'history-completed';
     else
@@ -39,6 +46,12 @@ class Utilities
       return $date = date('M d, Y h:i A', strtotime($date));
     else
       return $date = date('M d, Y', strtotime($date));
+  }
+
+  public static function getCurrentDate(): string
+  {
+    $date = new DateTime();
+    return $date->format('Y-m-d H:i:s');
   }
 
   public static function isCustomer(): bool

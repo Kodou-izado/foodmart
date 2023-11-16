@@ -13,9 +13,9 @@ async function request(url, data, headers = {}){
     }
     
     const responseData = await response.json();
-    // const responseData = await response.text();
-
     return responseData;
+    
+    // const responseData = await response.text();
     // console.log(responseData)
   } catch (error) {
     toast(error, 'error');

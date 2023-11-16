@@ -7,6 +7,7 @@ define('SYSTEM_URL', 'http://localhost/projects/foodmart');
 // define('SYSTEM_URL', 'http://192.168.254.150/projects/foodmart');
 
 use Config\Database;
+use App\Utils\Utilities;
 use App\Utils\DbHelper;
 use App\Controller\AccountController;
 use App\Controller\MenuController;
@@ -27,4 +28,4 @@ $user = new UserController($helper);
 $cart = new CartController($helper);
 $order = new OrderController($helper);
 
-date_default_timezone_set('Asia/Hong_Kong');
+date_default_timezone_set('Asia/Manila');

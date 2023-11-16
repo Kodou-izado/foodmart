@@ -18,7 +18,7 @@
       <img src="<?php echo SYSTEM_URL ?>/public/icons/search-normal-linear.svg" alt="search" class="w-4">
     </div>  
 
-    <section class="w-[min(60rem,90%)] mx-auto">
+    <section class="w-[min(70rem,90%)] mx-auto">
       <div class="flex justify-between gap-2 mb-4">
         <div class="filter w-[13rem] h-12 relative flex items-center justify-between bg-gray-100 px-6 rounded-full cursor-pointer z-[8]">
           <p class="filter-name text-[10px] md:text-xs text-slate-500 font-medium">
@@ -35,6 +35,15 @@
             </li>
             <li class="filter-option order-filter flex items-center text-[10px] md:text-xs text-slate-500 font-medium gap-3 py-2 hover:bg-gray-100 px-6 transition-all" data-value="Confirmed">
               Confirmed
+            </li>
+            <li class="filter-option order-filter flex items-center text-[10px] md:text-xs text-slate-500 font-medium gap-3 py-2 hover:bg-gray-100 px-6 transition-all" data-value="On Process">
+              On Process
+            </li>
+            <li class="filter-option order-filter flex items-center text-[10px] md:text-xs text-slate-500 font-medium gap-3 py-2 hover:bg-gray-100 px-6 transition-all" data-value="Ready to Pickup">
+              Ready to Pickup
+            </li>
+            <li class="filter-option order-filter flex items-center text-[10px] md:text-xs text-slate-500 font-medium gap-3 py-2 hover:bg-gray-100 px-6 transition-all" data-value="Ready to Delivery">
+              Ready to Delivery
             </li>
             <li class="filter-option order-filter flex items-center text-[10px] md:text-xs text-slate-500 font-medium gap-3 py-2 hover:bg-gray-100 px-6 transition-all" data-value="Completed">
               Completed
@@ -55,20 +64,12 @@
             <th class="bg-gray-100 py-6 px-3">Payment Method</th>
             <th class="bg-gray-100 py-6 px-3">Delivery Address</th>
             <th class="bg-gray-100 py-6 px-3">Status</th>
+            <th class="bg-gray-100 py-6 px-3">Date</th>
             <th class="bg-gray-100 py-6 px-3">Actions</th>
           </thead>
           <tbody>
             <?php 
               foreach($order->get() as $order): 
-                if($order->status == "Pending"){
-                  $style = 'bg-orange-100 text-orange-500';
-                } elseif($order->status == "Confirmed"){
-                  $style = 'bg-teal-100 text-teal-500';
-                } elseif($order->status == "Completed"){
-                  $style = 'bg-emerald-100 text-emerald-500';
-                } else {
-                  $style = 'bg-red-100 text-red-500';
-                }
             ?>
               <tr 
                 class="search-area order-row hover:bg-gray-50 odd:bg-white even:bg-gray-50 transition-all cursor-pointer" 
@@ -90,9 +91,12 @@
                   <?= $order->delivery_address == "" ? 'Not Applicable' : $order->delivery_address ?>
                 </td>
                 <td class="py-4 px-3">
-                  <span class="finder6 <?= $style ?> font-semibold py-2 px-3 rounded-full pointer-events-none">
+                  <span class="finder6 <?= Utilities::getStatusColor($order->status) ?> text-[10px] text-white font-medium py-2 px-3 rounded-full pointer-events-none">
                     <?= $order->status ?>
                   </span>
+                </td>
+                <td class="py-4 px-3">
+                  <?= Utilities::formatDate($order->date_added, "dt") ?>
                 </td>
                 <td class="flex justify-center items-center gap-1 py-4 px-3">
                 <?php if($order->payment_method == "GCash"){ ?>
@@ -100,15 +104,22 @@
                     <img src="<?php echo SYSTEM_URL ?>/public/icons/receipt-2-linear.svg" alt="receipt" class="w-4 pointer-events-none">
                   </button>
                 <?php } ?>
-                  <button class="status-btn relative text-[10px] font-semibold text-dark-gray bg-gray-100 py-2 px-3 rounded-full group/status">
+                  <button class="status-btn relative text-[10px] font-semibold text-dark-gray bg-gray-100 py-2 px-3 rounded-full group/status disabled:bg-gray-300" <?= $order->status == "Cancelled" || $order->status == "Completed" ? 'disabled' : '' ?>>
                     Change Status
   
-                    <div class="absolute top-1/2 -translate-y-1/2 right-[90%] group-hover/status:right-[105%] w-max flex  bg-white shadow-lg transition-all invisible group-hover/status:visible opacity-0 group-hover/status:opacity-100 z-[5]">
-                      <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Pending</span>
-                      <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Confirmed</span>
-                      <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Completed</span>
-                      <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Cancelled</span>
-                    </div>
+                    <?php if ($order->status != "Cancelled" && $order->status != "Completed") { ?>
+
+                      <div class="absolute top-1/2 -translate-y-1/2 right-[90%] group-hover/status:right-[105%] w-max flex  bg-white shadow-lg transition-all invisible group-hover/status:visible opacity-0 group-hover/status:opacity-100 z-[5]">
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Pending</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Confirmed</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">On Process</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Ready to Pickup</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Ready to Deliver</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Completed</span>
+                        <span class="status-option block py-2 px-3 hover:bg-gray-100 transition-all" data-value="<?= $order->order_id ?>">Cancelled</span>
+                      </div>
+
+                    <?php } ?>
                   </button>
                 </td>
               </tr>

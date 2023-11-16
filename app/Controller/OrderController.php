@@ -108,10 +108,15 @@ class OrderController implements AppInterface
     );
 
     $cart_items = $this->helper->fetchAll();
+    $currentDate = Utilities::getCurrentDate();
+
+    $this->helper->query('SELECT * FROM `orders` ORDER BY `id` DESC LIMIT 1');
+    $prev_order_data = $this->helper->fetchAll();
+    $order_no = count($prev_order_data) ? Utilities::generateOrderNo($prev_order_data[0]->order_no) : Utilities::generateOrderNo();
 
     $this->helper->query(
-      'INSERT INTO `orders` (`order_id`, `order_no`, `user_id`, `order_type`, `payment_method`, `delivery_address`, `status`, `date_added`) VALUES (UUID(), ?, ?, ?, ?, ?, ?, current_timestamp())',
-      [Utilities::generateOrderNo(), $_SESSION['uid'], $this->order_type, $this->payment_method, $this->delivery_address, 'Pending']
+      'INSERT INTO `orders` (`order_id`, `order_no`, `user_id`, `order_type`, `payment_method`, `delivery_address`, `status`, `date_added`) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?)',
+      [$order_no, $_SESSION['uid'], $this->order_type, $this->payment_method, $this->delivery_address, 'Pending', $currentDate]
     );
 
     if($this->helper->rowCount() == 0){
@@ -169,8 +174,8 @@ class OrderController implements AppInterface
 
       if ($new_menu_data->menu_stock < 10) {
         $this->helper->query(
-          "INSERT INTO `notifications` (`origin_id`, `origin_type`, `date_created`) VALUES (?, ?, current_timestamp())", 
-          [$item->menu_id, 'Stock']
+          "INSERT INTO `notifications` (`origin_id`, `origin_type`, `date_created`) VALUES (?, ?, ?)", 
+          [$item->menu_id, 'Stock', $currentDate]
         );
 
         if($this->helper->rowCount() == 0){
@@ -196,8 +201,8 @@ class OrderController implements AppInterface
     }
 
     $this->helper->query(
-      "INSERT INTO `notifications` (`origin_id`, `origin_type`, `user_id`, `date_created`) VALUES (?, ?, ?, current_timestamp())",
-      [$_SESSION['uid'], 'New Order', $_SESSION['uid']]
+      "INSERT INTO `notifications` (`origin_id`, `origin_type`, `user_id`, `date_created`) VALUES (?, ?, ?, ?)",
+      [$_SESSION['uid'], 'New Order', $_SESSION['uid'], $currentDate]
     );
 
     if($this->helper->rowCount() == 0){
@@ -211,7 +216,7 @@ class OrderController implements AppInterface
 
   public function update(string $id): string
   {
-    if(empty($id) OR empty($this->status)){
+    if (empty($id) OR empty($this->status)) {
       return $this->message->jsonError('An error occurred');
     }
 
@@ -224,6 +229,10 @@ class OrderController implements AppInterface
       return $this->message->jsonError('An error occurred');
     }
 
+    $order_data = $this->helper->fetch();
+
+    $this->helper->startTransaction();
+
     $this->helper->query(
       'UPDATE `orders` SET `status` = ? WHERE `order_id` = ?',
       [$this->status, $id]
@@ -233,12 +242,62 @@ class OrderController implements AppInterface
       return $this->message->jsonError('Status failed to update');
     }
 
+    if (Utilities::isCustomer() && $this->status == "Cancelled") {
+      $this->helper->query(
+        'INSERT INTO `notifications` (`origin_id`, `origin_type`, `date_created`) VALUES (?, ?, ?)',
+        [$_SESSION['uid'], 'Customer Cancel', Utilities::getCurrentDate()]
+      );
+
+      if ($this->helper->rowCount() == 0) {
+        $this->helper->rollback();
+        return $this->message->jsonError('An error occurred');
+      }
+    }
+
+    if (Utilities::isAdmin()) {
+      $this->helper->query(
+        'INSERT INTO `notifications` (`origin_id`, `origin_type`, `user_id`, `date_created`) VALUES (?, ?, ?, ?)',
+        [$order_data->order_id, 'Admin ' . $this->status, $order_data->user_id, Utilities::getCurrentDate()]
+      );
+
+      if ($this->helper->rowCount() == 0) {
+        $this->helper->rollback();
+        return $this->message->jsonError('An error occurred');
+      }
+    }
+
+    if ($this->status == "Cancelled") {
+      $this->helper->query(
+        'SELECT * FROM `order_items` WHERE `order_id` = ?',
+        [$id]
+      );
+
+      foreach ($this->helper->fetchAll() as $item) {
+        $this->helper->query(
+          'SELECT * FROM `menus` WHERE `menu_id` = ?',
+          [$item->menu_id]
+        );
+
+        $menu_data = $this->helper->fetch();
+        $new_stock = $menu_data->menu_stock + $item->quantity;
+
+        $this->helper->query(
+          'UPDATE `menus` SET `menu_stock` = ? WHERE `menu_id` = ?',
+          [$new_stock, $item->menu_id]
+        );
+  
+        if ($this->helper->rowCount() == 0) {
+          $this->helper->rollback();
+          return $this->message->jsonError('An error occurred');
+        }
+      }
+
+    }
+
+    $this->helper->commit();
     $message = Utilities::isCustomer() ? 'Order was cancelled' : 'Status was updated';
     return $this->message->jsonSuccess($message);
   }
   
-  public function delete(string $id): string
-  {
-
-  }
+  public function delete(string $id): string {}
 }
