@@ -38,12 +38,20 @@ Flight::route('/orders', function(){
   Flight::render('Views/orders.php');
 });
 
-Flight::route('/users', function(){
-  Flight::render('Views/users.php');
+Flight::route('/users/@type', function($type){
+  Flight::render('Views/users.php', array('type' => $type));
 });
 
 Flight::route('/about-us', function(){
   Flight::render('Views/about-us.php');
+});
+
+Flight::route('/message', function(){
+  Flight::render('Views/message.php');
+});
+
+Flight::route('/message/@id', function($id){
+  Flight::render('Views/view-message.php', array('id' => $id));
 });
 
 Flight::route('/shopping-cart', function(){

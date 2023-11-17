@@ -17,7 +17,7 @@
     ?>
 
     <section class="w-[min(60rem,90%)] mx-auto">
-      <div class="flex justify-between gap-2 mb-4">
+      <div class="flex flex-wrap justify-between gap-2 mb-4">
         <div class="filter w-[13rem] h-12 relative flex items-center justify-between bg-gray-100 px-6 rounded-full cursor-pointer z-[8]">
           <p class="filter-name text-[10px] md:text-xs text-slate-500 font-medium">
             Apply filters
@@ -43,11 +43,16 @@
             </li>
           </div>
         </div>
+
+        <div class="flex items-center gap-3">
+          <a href="<?= SYSTEM_URL ?>/users/student" class="account-type <?= $type == "student" ? "active" : "" ?>">Students</a>
+          <a href="<?= SYSTEM_URL ?>/users/teacher" class="account-type <?= $type == "teacher" ? "active" : "" ?>">Teachers</a>
+        </div>
       </div>
 
-      <?php if(count($user->get()) > 0){ ?>
+      <?php if(count($user->get($type)) > 0){ ?>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <?php foreach($user->get() as $user): ?>
+        <?php foreach($user->get($type) as $user): ?>
           <div class="search-area py-4 px-8 rounded-2xl border-2 border-gray-100 shadow-sm">
             <div class="flex items-center gap-3 mb-4">
               <img src="<?php echo SYSTEM_URL ?>/uploads/user/<?= $user->gender == "Male" ? "Male" : "Female" ?>.svg" alt="user" class="w-12">
@@ -68,7 +73,7 @@
             <div class="flex items-center gap-2 mb-2">
               <img src="<?php echo SYSTEM_URL ?>/public/icons/award-linear.svg" alt="yearsection" class="w-5">
               <p class="finder3 text-xs text-slate-500 font-medium">
-                <?= $user->year_section ?>
+                <?= !empty($user->year_section) ? $user->year_section : "Not Applicable" ?>
               </p>
             </div>
             <div class="flex items-center gap-2 mb-4">
@@ -128,10 +133,21 @@
           </div>
         <?php endforeach ?>
       </div>
+
+      <div class="pagination-wrapper hidden">
+        <button type="button" class="pagination-btn prev-btn">Prev</button>
+        <ul class="page-wrapper">
+          <li>
+            <a href="#" class="page-link active">1</a>
+          </li>
+          <li class="ellipsis">...</li>
+        </ul>
+        <button type="button" class="pagination-btn next-btn text-xs text-slate-500 font-medium bg-gray-100 py-2 px-4 rounded-full">Next</button>
+      </div>
     <?php } else { ?>
       <div class="grid place-items-center bg-gray-100 <?php echo Utilities::isCustomer() ? 'min-h-[80vh]' : 'min-h-[70vh]' ?> rounded-md">
         <div>
-          <img src="./public/icons/empty 1.svg" alt="empty" class="mx-auto my-0 w-20">
+          <img src="<?= SYSTEM_URL ?>/public/icons/empty 1.svg" alt="empty" class="mx-auto my-0 w-20">
           <p class="text-sm text-slate-500 font-semibold">No records found</p>
         </div>
       </div>

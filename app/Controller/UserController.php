@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Interfaces\AppInterface;
 use App\Utils\DbHelper;
 use App\Utils\Message;
 use stdClass;
 
-class UserController implements AppInterface
+class UserController
 {
   private $helper;
   private $message;
@@ -20,18 +19,32 @@ class UserController implements AppInterface
     $this->message = new Message();
   }
 
-  public function get(): array
+  public function get(string $type): array
   {
     if(!empty($_SESSION['account_filter'])){
-      $this->helper->query(
-        'SELECT * FROM `accounts` WHERE NOT `role_id` = ? AND `account_status` = ? ORDER BY `id` DESC',
-        ['699dd7be-0c4b-11ee-a71c-088fc30176f9', $_SESSION['account_filter']]
-      );
+      if ($type == 'student') {
+        $this->helper->query(
+          'SELECT * FROM `accounts` WHERE NOT `role_id` = ? AND `account_status` = ? AND `year_section` != ? ORDER BY `id` DESC',
+          ['699dd7be-0c4b-11ee-a71c-088fc30176f9', $_SESSION['account_filter'], ""]
+        );
+      } else {
+        $this->helper->query(
+          'SELECT * FROM `accounts` WHERE NOT `role_id` = ? AND `account_status` = ? AND `year_section` = ? ORDER BY `id` DESC',
+          ['699dd7be-0c4b-11ee-a71c-088fc30176f9', $_SESSION['account_filter'], ""]
+        );
+      }
     } else{
-      $this->helper->query(
-        'SELECT * FROM `accounts` WHERE NOT `role_id` = ? ORDER BY `id` DESC',
-        ['699dd7be-0c4b-11ee-a71c-088fc30176f9']
-      );
+      if ($type == 'student') {
+        $this->helper->query(
+          'SELECT * FROM `accounts` WHERE NOT `role_id` = ? AND `year_section` != ? ORDER BY `id` DESC',
+          ['699dd7be-0c4b-11ee-a71c-088fc30176f9', ""]
+        );
+      } else {
+        $this->helper->query(
+          'SELECT * FROM `accounts` WHERE NOT `role_id` = ? AND `year_section` = ? ORDER BY `id` DESC',
+          ['699dd7be-0c4b-11ee-a71c-088fc30176f9', ""]
+        );
+      }
     }
 
     return $this->helper->fetchAll();

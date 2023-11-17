@@ -4,6 +4,13 @@ window.addEventListener('load', () => {
   hideLoader();
 })
 
+window.addEventListener("DOMContentLoaded", () => {
+  const paginationWrapper = document.querySelector(".pagination-wrapper");
+  if (paginationWrapper !== null) {
+    pagination(".search-area", "div", 9);
+  }
+})
+
 addEvent("body", "click", () => {
   const notification = document.querySelector(".notification");
   if(notification !== null) {
