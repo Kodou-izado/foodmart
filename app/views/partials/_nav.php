@@ -147,6 +147,124 @@
         </button>
       <?php } ?>
 
+      <div class="relative w-9 h-9 grid place-items-center bg-grey text-sm font-medium rounded-full" title="Notifications">
+        <img src="<?php echo SYSTEM_URL ?>/public/icons/notification-bing-linear.svg" alt="notification" role="button" class="show-notification w-4 h-4">
+
+        <?php  
+          if (Utilities::isCustomer()) {
+            $helper->query("SELECT * FROM `notifications` WHERE `notif_status` = ? AND `user_id` = ? AND `origin_type` NOT IN ('New Order', 'Customer Cancel', 'New Message')", ["Unread", $_SESSION['uid']]);
+            $notif_count = $helper->rowCount();
+
+            $helper->query("SELECT * FROM `notifications` WHERE `user_id` = ? AND `origin_type` NOT IN ('New Order', 'Customer Cancel', 'New Message') ORDER BY `id` DESC", [$_SESSION['uid']]);
+          } else {
+            $helper->query("SELECT * FROM `notifications` WHERE `notif_status` = ?", ["Unread"]);
+            $notif_count = $helper->rowCount();
+
+            $helper->query("SELECT * FROM `notifications` WHERE `origin_type` NOT IN ('Admin Cancelled', 'Admin Confirmed', 'Admin On Process', 'Admin Ready to Pickup', 'Admin Ready to Deliver', 'Admin Completed', 'Message Reply') ORDER BY `id` DESC");
+          }
+          $notifications = $helper->fetchAll();
+        ?>
+
+        <?php if($notif_count > 0){ ?>
+
+          <span class="notif-count absolute top-1 right-0 w-4 h-4 flex items-center justify-center text-[8px] font-medium text-white bg-primary rounded-full pointer-events-none"><?php echo $notif_count ?></span>
+
+        <?php } ?>
+
+        <div class="notification absolute top-full right-0 w-[14rem] bg-white rounded-xl py-4 opacity-0 invisible shadow-md z-[2]">
+          <div class="px-6 pb-2 border-b border-b-gray-300/40">
+            <p class="text-[11px] font-semibold text-black leading-none">Notifications</p>
+            <p class="text-[9px] font-semibold text-black/60">Be notified of the new orders</p>
+          </div>
+          <div class="custom-scroll max-h-[210px] overflow-y-auto">
+            <?php 
+              if(count($notifications) > 0){ 
+                foreach($notifications as $notification):
+                  $notificationLink = '
+                    <a href="' .SYSTEM_URL .'%REDIRECT%" class="notif %STATUS%"">
+                      <p class="text-[9.5px] font-semibold text-black/60 leading-tight">%CONTENT%</p>
+                    </a>
+                  ';
+
+                  if (Utilities::isCustomer()) {
+                    if ($notification->origin_type == "Message Reply") {
+                      $content = '<span class="text-primary">Foodmart</span> replied to your message.';
+                      $notificationLink = str_replace(
+                        ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                        ['/message', $notification->notif_status, $content],
+                        trim($notificationLink)
+                      );
+                    } else {
+                        $helper->query('SELECT * FROM `orders` WHERE `order_id` = ?', [$notification->origin_id]);
+                        $order_data = $helper->fetch();
+                        $order_data->status = str_replace("Admin ", "", $notification->origin_type);
+                        $content = 'Your order with order no <span class="text-primary">'. $order_data->order_no .'</span> has been '. $notification->origin_type .'';
+                        $notificationLink = str_replace(
+                          ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                          ['/order-history', $notification->notif_status, $content],
+                          trim($notificationLink)
+                        );
+                    }
+                  } else {
+                    if ($notification->origin_type == "Stock") {
+                      $helper->query('SELECT * FROM `menus` WHERE `menu_id` = ?', [$notification->origin_id]);
+                      $menu_data = $helper->fetch();
+                      $content = 'Stock of <span class="text-primary">'. $menu_data->menu_name .'</span> is getting low';
+                      $notificationLink = str_replace(
+                        ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                        ['/update-menu/'. $menu_data->menu_id, $notification->notif_status, $content],
+                        trim($notificationLink)
+                      );
+                    } elseif ($notification->origin_type == "New Order") {
+                      $helper->query('SELECT * FROM `accounts` WHERE `user_id` = ?', [$notification->origin_id]);
+                      $user_data = $helper->fetch();
+                      $content = 'A new order from <span class="text-primary">'. $user_data->fullname .'</span> has been placed. Confirm it now';
+                      $notificationLink = str_replace(
+                        ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                        ['/orders', $notification->notif_status, $content],
+                        trim($notificationLink)
+                      );
+                    } elseif ($notification->origin_type == "New User") {
+                      $helper->query('SELECT * FROM `accounts` WHERE `user_id` = ?', [$notification->origin_id]);
+                      $user_data = $helper->fetch();
+                      $content = '<span class="text-primary">'. $user_data->fullname .'</span> register a new account. Verify it now';
+                      $notificationLink = str_replace(
+                        ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                        ['/users/student', $notification->notif_status, $content],
+                        trim($notificationLink)
+                      );
+                    } elseif ($notification->origin_type == "Customer Cancel") {
+                      $helper->query('SELECT * FROM `accounts` WHERE `user_id` = ?', [$notification->origin_id]);
+                      $user_data = $helper->fetch();
+                      $content = '<span class="text-primary">'. $user_data->fullname .'</span> cancelled his/her order';
+                      $notificationLink = str_replace(
+                        ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                        ['/orders', $notification->notif_status, $content],
+                        trim($notificationLink)
+                      );
+                    } else {
+                        $helper->query('SELECT * FROM `accounts` WHERE `user_id` = ?', [$notification->user_id]);
+                        $user_data = $helper->fetch();
+                        $content = 'You have a new message from <span class="text-primary">'. $user_data->fullname .'</span>. Open it now';
+                        $notificationLink = str_replace(
+                          ['%REDIRECT%', '%STATUS%', '%CONTENT%'],
+                          ['/message/' . $user_data->user_id, $notification->notif_status, $content],
+                          trim($notificationLink)
+                        );
+                    }
+                  }
+            ?>
+
+              <?= $notificationLink ?>
+
+            <?php
+                endforeach;
+                }    
+            ?>
+          </div>
+        </div>
+      </div>
+
       <?php if(Utilities::isCustomer()){ ?>
         <a href="<?php echo SYSTEM_URL.'/shopping-cart' ?>" class="relative hover:bg-gray-100 p-3 rounded-full transition-all">
           <svg viewBox="0 0 24 24" width="20" height="20" class="w-8 stroke-dark-gray stroke-2">
@@ -170,47 +288,6 @@
       <?php } ?>
       </div>
 
-      <?php if(Utilities::isAdmin()){ ?>
-        <div class="relative w-9 h-9 grid place-items-center bg-grey text-sm font-medium rounded-full" title="Notifications">
-          <img src="<?php echo SYSTEM_URL ?>/public/icons/notification-bing-linear.svg" alt="notification" role="button" class="show-notification w-4 h-4">
-  
-          <?php  
-            $helper->query("SELECT * FROM `notifications` WHERE `notif_status` = ?", ["Unread"]);
-            $notif_count = $helper->rowCount();
-  
-            $helper->query("SELECT * FROM `notifications` n LEFT JOIN `accounts` a ON n.user_id=a.user_id ORDER BY n.id DESC");
-            $notifications = $helper->fetchAll();
-          ?>
-  
-          <?php if($notif_count > 0){ ?>
-  
-            <span class="notif-count absolute top-1 right-0 w-4 h-4 flex items-center justify-center text-[8px] font-medium text-white bg-primary rounded-full pointer-events-none"><?php echo $notif_count ?></span>
-  
-          <?php } ?>
-  
-          <div class="notification absolute top-full right-0 w-[14rem] bg-white rounded-xl py-4 opacity-0 invisible shadow-md z-[2]">
-            <div class="px-6 pb-2 border-b border-b-gray-300/40">
-              <p class="text-[11px] font-semibold text-black leading-none">Notifications</p>
-              <p class="text-[9px] font-semibold text-black/60">Be notified of the new orders</p>
-            </div>
-            <div class="custom-scroll max-h-[210px] overflow-y-auto">
-              <?php 
-                if(count($notifications) > 0){ 
-                  foreach($notifications as $notification):
-              ?>
-  
-                <a href="<?php echo SYSTEM_URL ?>/orders" class="notif <?= strtolower($notification->notif_status) ?>">
-                  <p class="text-[9.5px] font-semibold text-black/60 leading-tight">A new order from <span class="text-primary"><?= $notification->fullname ?></span> has been placed. Confirm it now</p>
-                </a>
-  
-              <?php
-                  endforeach;
-                 }    
-              ?>
-            </div>
-          </div>
-        </div>
-      <?php } ?>
       <div class="relative flex items-center cursor-pointer group/profile">
         <img src="<?php echo SYSTEM_URL ?>/uploads/user/male.svg" alt="profile" class="w-8">
 
