@@ -474,3 +474,48 @@ addEvent('.show-notification', 'click', () => {
 
   fetch(SYSTEM_URL + '/app/handler/process_notification_read.php');
 })
+
+addEvent('#customer-message-form', 'submit', (e) => {
+  e.preventDefault();
+  const sendBtn = document.querySelector("#send-btn");
+  sendBtn.setAttribute("disabled", "");
+
+  request(
+    SYSTEM_URL + '/app/handler/process_customer_message.php', 
+    new FormData(e.target)
+  )
+  .then(data => {
+    
+    if(data.type === 'success'){
+      location.reload();
+      return
+    }
+
+    sendBtn.removeAttribute("disabled");
+    toast(data.message, data.type);
+  })
+})
+
+addEvent('#admin-message-form', 'submit', (e) => {
+  e.preventDefault();
+  const sendBtn = document.querySelector("#admin-send-btn");
+  sendBtn.setAttribute("disabled", "");
+
+  let formData = new FormData(e.target);
+  formData.append("customer_id", sendBtn.dataset.value);
+
+  request(
+    SYSTEM_URL + '/app/handler/process_admin_message.php', 
+    formData
+  )
+  .then(data => {
+    
+    if(data.type === 'success'){
+      location.reload();
+      return
+    }
+
+    sendBtn.removeAttribute("disabled");
+    toast(data.message, data.type);
+  })
+})

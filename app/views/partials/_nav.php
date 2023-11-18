@@ -12,7 +12,7 @@
 
     <ul class="flex items-center nav-items flex-1">
       <li class="group/link relative">
-        <a href="<?php echo SYSTEM_URL.'/menu' ?>" class="group/link relative flex items-center gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-4 py-4 rounded-full transition-all cursor-pointer <?php echo $title == "Menu" ? 'active-link' : '' ?>">
+        <a href="<?php echo SYSTEM_URL.'/menu' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all cursor-pointer <?php echo $title == "Menu" ? 'active-link' : '' ?>">
           <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
             <g id="vuesax_linear_category" data-name="vuesax/linear/category">
               <g id="category">
@@ -49,7 +49,7 @@
       </li>
       <?php if(Utilities::isCustomer()){ ?>
         <li>
-          <a href="<?php echo SYSTEM_URL.'/order-history' ?>" class="relative group/link flex items-center gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-4 py-4 rounded-full transition-all <?php echo $title == "Order History" ? 'active-link' : '' ?>">
+          <a href="<?php echo SYSTEM_URL.'/order-history' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all <?php echo $title == "Order History" ? 'active-link' : '' ?>">
             <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
               <g id="vuesax_linear_receipt" data-name="vuesax/linear/receipt">
                 <g id="receipt">
@@ -60,11 +60,11 @@
                 </g>
               </g>
             </svg>            
-            Order History
+            History
           </a>
         </li>
         <li>
-          <a href="<?php echo SYSTEM_URL.'/about-us' ?>" class="relative group/link flex items-center gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-4 py-4 rounded-full transition-all <?php echo $title == "About Us" ? 'active-link' : '' ?>">
+          <a href="<?php echo SYSTEM_URL.'/about-us' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all <?php echo $title == "About Us" ? 'active-link' : '' ?>">
             <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
               <g id="vuesax_linear_info-circle" data-name="vuesax/linear/info-circle">
                 <g id="info-circle">
@@ -75,13 +75,13 @@
                 </g>
               </g>
             </svg>     
-            About Us
+            About
           </a>
         </li>
       <?php } ?>
       <?php if(Utilities::isAdmin()){ ?>
         <li>
-          <a href="<?php echo SYSTEM_URL.'/orders' ?>" class="relative group/link flex items-center gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-4 py-4 rounded-full transition-all <?php echo $title == "Orders" ? 'active-link' : '' ?>">
+          <a href="<?php echo SYSTEM_URL.'/orders' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all <?php echo $title == "Orders" ? 'active-link' : '' ?>">
             <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
               <g id="vuesax_linear_receipt" data-name="vuesax/linear/receipt">
                 <g id="receipt">
@@ -96,7 +96,7 @@
           </a>
         </li>
         <li>
-          <a href="<?php echo SYSTEM_URL.'/users' ?>" class="relative group/link flex items-center gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-4 py-4 rounded-full transition-all <?php echo $title == "Users" ? 'active-link' : '' ?>">
+          <a href="<?php echo SYSTEM_URL.'/users/student' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all <?php echo $title == "Users" ? 'active-link' : '' ?>">
             <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
               <g id="vuesax_linear_user" data-name="vuesax/linear/user">
                 <g id="user">
@@ -110,6 +110,22 @@
           </a>
         </li>
       <?php } ?>
+      <li class="group/link relative">
+        <a href="<?php echo SYSTEM_URL.'/message' ?>" class="group/link relative flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs text-slate-500 font-medium hover:text-dark-gray px-6 py-[10px] md:py-4 rounded-3xl transition-all cursor-pointer <?php echo $title == "Message" ? 'active-link' : '' ?>">
+          <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover/link:stroke-dark-gray group-[.active-link]/link:stroke-dark-gray stroke-2 transition-all">
+            <g id="vuesax_linear_message" data-name="vuesax/linear/message">
+              <g id="message-2" data-name="message">
+                <path id="Vector" d="M6.5,17H6c-4,0-6-1-6-6V6Q0,0,6,0h8q6,0,6,6v5q0,6-6,6h-.5a1.014,1.014,0,0,0-.8.4l-1.5,2a1.421,1.421,0,0,1-2.4,0l-1.5-2A1.13,1.13,0,0,0,6.5,17Z" transform="translate(2 2)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="current"/>
+                <path id="Vector-2" data-name="Vector" d="M.495.5H.5" transform="translate(15.502 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <path id="Vector-3" data-name="Vector" d="M.495.5H.5" transform="translate(11.501 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <path id="Vector-4" data-name="Vector" d="M.495.5H.5" transform="translate(7.5 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <path id="Vector-5" data-name="Vector" d="M0,0H24V24H0Z" fill="none" opacity="0"/>
+              </g>
+            </g>
+          </svg>
+          Message
+        </a>
+      </li>
     </ul>
 
     <ul class="flex items-center gap-2">
