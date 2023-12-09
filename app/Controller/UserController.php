@@ -91,6 +91,41 @@ class UserController
 
   public function delete(string $id): string
   {
-    
+    if (empty($id)) {
+      return $this->message->jsonError('An error occurred');
+    }
+
+    $this->helper->query(
+      'SELECT * FROM `accounts` WHERE `user_id` = ?',
+      [$id]
+    );
+
+    if ($this->helper->rowCount() < 1) {
+      return $this->message->jsonError('An error occurred');
+    }
+
+    $this->helper->startTransaction();
+
+    $this->helper->query(
+      'DELETE FROM `accounts` WHERE `user_id` = ?',
+      [$id]
+    );
+
+    if ($this->helper->rowCount() < 1) {
+      return $this->message->jsonError('An error occurred');
+    }
+
+    $this->helper->query(
+      'DELETE FROM `notifications` WHERE `origin_id` = ? OR `user_id` = ?',
+      [$id, $id]
+    );
+
+    $this->helper->query(
+      'DELETE FROM `messages` WHERE `sender_id` = ? OR `receiver_id` = ?',
+      [$id, $id]
+    );
+
+    $this->helper->commit();
+    return $this->message->jsonSuccess('Account was deleted');
   }
 }

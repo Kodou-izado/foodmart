@@ -79,7 +79,7 @@
                   <?= $order->order_no ?>
                 </td>
                 <td class="finder2 py-4 px-3">
-                  <?= $order->fullname ?>
+                  <?= isset($order->fullname) ? $order->fullname : 'User' ?>
                 </td>
                 <td class="finder3 py-4 px-3">
                   <?= $order->order_type ?>

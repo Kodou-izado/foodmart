@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '3ad5b4e29e06e42d7ad65e22bc0f0e5d7784641b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '3ad5b4e29e06e42d7ad65e22bc0f0e5d7784641b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'gumlet/php-image-resize' => array(
-            'pretty_version' => '2.0.3',
-            'version' => '2.0.3.0',
-            'reference' => 'aee4e2573e83476ffd0ac64b7269f838c8cd9d68',
+            'pretty_version' => '2.0.4',
+            'version' => '2.0.4.0',
+            'reference' => '54165d97ebc3d4fc188761166b78e6702f605f59',
             'type' => 'library',
             'install_path' => __DIR__ . '/../gumlet/php-image-resize',
             'aliases' => array(),

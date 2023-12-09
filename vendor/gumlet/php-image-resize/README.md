@@ -352,7 +352,9 @@ Flips an image using a given mode and this method is only for PHP version 5.4.
 $flip = new ImageResize('image.png');
 $image = imagecreatetruecolor(200, 100);
 
-$flip->imageFlip($image, 0);
+$image->addFilter(function ($image) {
+    imageflip($image, IMG_FLIP_HORIZONTAL);
+});
 
 ```
 
@@ -380,4 +382,4 @@ Maintainer
 
 This library is maintained by <a href="https://www.gumlet.com" target="_blank">Gumlet.com</a>
 
-[<img src="https://www.gumlet.com/public/img/logo.png" width="300px">](https://www.gumlet.com)
+[<img src="https://assets.gumlet.com/public/img/logo.png" width="300px">](https://www.gumlet.com)

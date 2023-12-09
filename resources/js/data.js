@@ -186,6 +186,25 @@ addEvent('.confirm-block', 'click', (e) => {
   })
 })
 
+addEvent('.confirm-delete-user', 'click', (e) => {
+  request(
+    SYSTEM_URL + '/app/handler/process_deleting_account.php', 
+    'id=' + e.target.dataset.value,
+    {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+  )
+  .then(data => {
+    toast(data.message, data.type);
+
+    if(data.type === 'success'){
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
+    }
+  })
+})
+
 addEvent('.account-filter', 'click', (e) => {
   request(
     SYSTEM_URL + '/app/handler/process_filtering_accounts.php', 

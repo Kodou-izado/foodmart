@@ -88,6 +88,19 @@
               </button>
             
             <div class="flex items-center gap-3">
+              <a href="<?= SYSTEM_URL ?>/message/<?= $user->user_id ?>" class="group text-[10px] text-slate-500 font-semibold p-2 bg-gray-100 hover:bg-emerald-500 rounded-full transition-all" title="Send Message">
+              <svg viewBox="0 0 24 24" class="w-4 stroke-slate-500 group-hover:stroke-white transition-all">
+                <g id="vuesax_linear_message" data-name="vuesax/linear/message">
+                  <g id="message-2" data-name="message">
+                    <path id="Vector" d="M6.5,17H6c-4,0-6-1-6-6V6Q0,0,6,0h8q6,0,6,6v5q0,6-6,6h-.5a1.014,1.014,0,0,0-.8.4l-1.5,2a1.421,1.421,0,0,1-2.4,0l-1.5-2A1.13,1.13,0,0,0,6.5,17Z" transform="translate(2 2)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="current"/>
+                    <path id="Vector-2" data-name="Vector" d="M.495.5H.5" transform="translate(15.502 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path id="Vector-3" data-name="Vector" d="M.495.5H.5" transform="translate(11.501 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path id="Vector-4" data-name="Vector" d="M.495.5H.5" transform="translate(7.5 10.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path id="Vector-5" data-name="Vector" d="M0,0H24V24H0Z" fill="none" opacity="0"/>
+                  </g>
+                </g>
+              </svg>
+              </a>
               <?php if($user->account_status == "Unverified" OR $user->account_status == "Blocked"){ ?>
                 <button class="group verify text-[10px] text-slate-500 font-semibold p-2 bg-gray-100 hover:bg-emerald-500 rounded-full transition-all" title="Verify User" data-value="<?= $user->user_id ?>">
                   <svg class="w-4 stroke-slate-500 group-hover:stroke-white stroke-[1.5] transition-all pointer-events-none" viewBox="0 0 24 24">
@@ -128,6 +141,20 @@
                   </svg>
                 </button>
               <?php } ?>
+              <button class="group delete-user text-[10px] text-slate-500 font-semibold p-2 bg-gray-100 hover:bg-rose-500 rounded-full transition-all" title="Delete User" data-value="<?= $user->user_id ?>">
+                <svg class="w-4 stroke-slate-500 group-hover:stroke-white stroke-[1.5] transition-all pointer-events-none" data-name="trash/linear" viewBox="0 0 24 24">
+                  <g id="vuesax_linear_trash" data-name="vuesax/linear/trash">
+                    <g id="trash">
+                      <path id="Vector" d="M18,.5C14.67.17,11.32,0,7.98,0A59.068,59.068,0,0,0,2.04.3L0,.5" transform="translate(3 5.48)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path id="Vector-2" data-name="Vector" d="M0,2.97.22,1.66C.38.71.5,0,2.19,0H4.81C6.5,0,6.63.75,6.78,1.67L7,2.97" transform="translate(8.5 2)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path id="Vector-3" data-name="Vector" d="M13.7,0l-.65,10.07c-.11,1.57-.2,2.79-2.99,2.79H3.64C.85,12.86.76,11.64.65,10.07L0,0" transform="translate(5.15 9.14)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path id="Vector-4" data-name="Vector" d="M0,0H3.33" transform="translate(10.33 16.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path id="Vector-5" data-name="Vector" d="M0,0H5" transform="translate(9.5 12.5)" fill="none" stroke="current" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path id="Vector-6" data-name="Vector" d="M0,0H24V24H0Z" fill="none" opacity="0"/>
+                    </g>
+                  </g>
+                </svg>
+              </button>
             </div>
             </div>
           </div>

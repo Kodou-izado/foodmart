@@ -174,6 +174,12 @@ addEvent('.block-btn', 'click', (e) => {
   showHideDialog('#block-dialog', 'show', value);
 });
 
+addEvent('.delete-user', 'click', (e) => {
+  const value = e.target.dataset.value;
+  
+  showHideDialog('#delete-user-dialog', 'show', value);
+});
+
 addEvent('.close-dialog', 'click', (e) => {
    showHideDialog(e.target.dataset.target, 'hide');
 

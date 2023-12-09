@@ -46,10 +46,10 @@ class MessageController extends Message implements AppInterface
         ['Read', $this->receiver_id]
       );
 
-      if ($this->helper->rowCount() == 0) {
-        $this->helper->rollback();
-        return $this->jsonError('Message cannot be send');
-      }
+      // if ($this->helper->rowCount() == 0) {
+      //   $this->helper->rollback();
+      //   return $this->jsonError('Message cannot be send');
+      // }
       
       $this->helper->query(
         'INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message`, `message_status`, `date_created`) VALUES (UUID(), ?, ?, ?, ?, current_timestamp())',

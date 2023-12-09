@@ -126,6 +126,30 @@
   </div>
 </div>
 
+<div class="dialog" id="delete-user-dialog">
+  <div class="w-[min(25rem,90%)] bg-white rounded-md">
+    <div class="flex items-center justify-between border-gray-100 border-b-2 py-4 px-6">
+      <p class="text-sm text-dark-gray font-medium">
+        Confirm
+      </p>
+      <button class="close-dialog" data-target="#delete-user-dialog">
+        <img src="<?php echo SYSTEM_URL ?>/public/icons/close-circle-linear.svg" alt="close" class="pointer-events-none">
+      </button>
+    </div>
+    <div class="py-4 px-6">
+      <p class="text-xs text-gray-500 mb-4">
+        Please confirm if you really want to delete this account?
+      </p>
+      <button class="confirm confirm-delete-user bg-emerald-500 text-xs text-white font-medium py-2 px-5 rounded-full">
+        Confirm
+      </button>
+      <button class="close-dialog bg-gray-200 text-xs text-dark-gray font-medium py-2 px-5 rounded-full" data-target="#delete-user-dialog">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="dialog" id="items-dialog">
   <div class="w-[min(25rem,90%)] bg-white rounded-md">
     <div class="flex items-center justify-between border-gray-100 border-b-2 py-4 px-6">
